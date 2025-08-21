@@ -178,3 +178,36 @@
   });
 
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+  /**
+   * Fungsi 1: Menghitung Usia Klinik Secara Otomatis
+   */
+  const tahunBerdiri = 2025;
+  const tahunSekarang = new Date().getFullYear();
+  let usiaKlinik = tahunSekarang - tahunBerdiri + 1;
+  const elemenAngka = document.querySelector('.years');
+  const elemenTeks = document.querySelector('.text');
+
+  // Pastikan elemennya ada sebelum mencoba mengubahnya
+  if (elemenAngka && elemenTeks) {
+    if (usiaKlinik <= 1) {
+      elemenAngka.textContent = '1';
+      elemenTeks.textContent = 'Tahun Pertama';
+    } else {
+      elemenAngka.textContent = usiaKlinik + '+';
+      elemenTeks.textContent = 'Tahun Melayani';
+    }
+  }
+
+  /**
+   * Fungsi 2: Mengatur Tahun Copyright di Footer Secara Otomatis
+   */
+  const elemenTahunCopyright = document.getElementById('copyright-year');
+
+  // Pastikan elemennya ada sebelum mencoba mengubahnya
+  if (elemenTahunCopyright) {
+    elemenTahunCopyright.textContent = new Date().getFullYear();
+  }
+
+}); // Akhir dari blok DOMContentLoaded
