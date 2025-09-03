@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistem Rekam Medis Klinik Aulia Hasanah Medika">
+  <title>Riwayat Rawat Inap — Aplikasi Rekam Medis</title>
+
+  <!-- Favicon dari Logo -->
+  <link rel="icon" href="../assets/img/logo.png">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===================================================================
+       STYLES DARI HALAMAN UTAMA (TETAP SAMA)
+       =================================================================== */
+    :root {
+      --primary-color: #d63384; --secondary-color: #0d3d8a; --accent-color: #e85aa7;
+      --heading-color: #1a202c; --text-color: #4a5568; --light-gray: #f8f9fa;
+      --border-color: #e9ecef; --sidebar-bg: #ffffff;
+      --app-bg: linear-gradient(180deg, #fdf6f9 0%, #f4f6fc 100%);
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --border-radius: 12px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-color); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; }
+    /* (Salin semua style umum lainnya dari halaman sebelumnya di sini agar tidak terlalu panjang) */
+    .topbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; height: 70px; }
+    .topbar .brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px; color: var(--secondary-color); }
+    .topbar .logo-img { width: 36px; height: auto; max-height: 36px; }
+    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: var(--transition); display: flex; flex-direction: column; }
+    .sidebar-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
+    .sidebar-nav { padding: 1rem 0.75rem; flex-grow: 1; overflow-y: auto; }
+    .sidebar .menu-title { font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0.75rem 0.5rem; font-weight: 700; }
+    .sidebar .nav-link { color: var(--text-color); border-radius: 8px; margin: 0.2rem 0; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; transition: var(--transition); }
+    .sidebar .nav-link .fa-solid, .sidebar .nav-link .fa-regular { font-size: 1rem; width: 20px; text-align: center; transition: var(--transition); }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover { background-image: linear-gradient(90deg, var(--primary-color), var(--accent-color)); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3); }
+    .sidebar .nav-link.active i, .sidebar .nav-link:hover i { transform: scale(1.1); }
+    .sidebar .nav-link .fa-chevron-down { transition: transform 0.3s ease; font-size: 0.8rem; }
+    .sidebar .nav-link:not(.collapsed) .fa-chevron-down { transform: rotate(180deg); }
+    .sidebar .submenu-container { position: relative; padding-left: 26px; margin-left: 1rem; }
+    .sidebar .submenu-container::before { content: ''; position: absolute; left: 0; top: 0; bottom: 10px; width: 2px; background-color: var(--border-color); border-radius: 2px; }
+    .sidebar .submenu-container ul { list-style: none; padding-left: 1rem; }
+    .sidebar .submenu-link { color: var(--text-color); padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.8rem; position: relative; }
+    .sidebar .submenu-link::before { content: ''; width: 6px; height: 6px; background-color: #cbd5e0; border-radius: 50%; transition: var(--transition); }
+    .sidebar .submenu-link:hover { background-color: #fdf6f9; color: var(--primary-color); box-shadow: none; }
+    .sidebar .submenu-link:hover::before { background-color: var(--primary-color); transform: scale(1.2); }
+    .app { display: flex; flex: 1; }
+    .content { flex: 1; padding: 2.5rem; animation: fadeInUp 0.5s ease-out; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--heading-color); margin-bottom: 2rem; position: relative; }
+    .content-card { border: 0; border-radius: var(--border-radius); box-shadow: var(--card-shadow); background: var(--sidebar-bg); border: 1px solid var(--border-color); }
+    .main-footer { padding: 1.5rem; text-align: center; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: auto; }
+    .main-footer a { color: var(--primary-color); text-decoration: none; }
+    .main-footer a:hover { text-decoration: underline; }
+    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.6rem 1.5rem; font-weight: 600; }
+    .btn-primary-custom:hover { background-color: #c22572; border-color: #c22572; }
+
+    /* STYLING KHUSUS HALAMAN RIWAYAT RAWAT INAP */
+    .table-responsive { border: 1px solid var(--border-color); border-radius: var(--border-radius); }
+    .table { margin-bottom: 0; }
+    .table thead th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.8rem; color: var(--heading-color); background-color: var(--light-gray); border-bottom: 2px solid var(--border-color); }
+    .table tbody td { vertical-align: middle; color: var(--text-color); }
+    .table-hover tbody tr:hover { background-color: #fdf6f9; }
+    .status-badge { font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; }
+    .status-dirawat { background-color: rgba(214, 51, 132, 0.1); color: var(--primary-color); }
+    .status-pulang { background-color: #e6fffa; color: #38b2ac; }
+    
+    /* PERUBAHAN: Tambahkan CSS untuk tombol aksi ikon */
+    .action-buttons .btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    @media (max-width: 992px) {
+      .sidebar { position: fixed; z-index: 1040; height: 100vh; left: -280px; }
+      .sidebar.show { left: 0; }
+      .backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: none; z-index: 1030; }
+      .backdrop.show { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar px-3">
+    <!-- (Isi Topbar sama seperti halaman sebelumnya) -->
+    <div class="container-fluid d-flex align-items-center justify-content-between h-100">
+      <div class="d-flex align-items-center gap-3"><button class="btn btn-outline-secondary d-lg-none" id="btnSidebar" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button><a class="d-flex align-items-center gap-2 text-decoration-none" href="#"><img src="../assets/img/logo.png" alt="Logo Klinik Aulia Hasanah Medika" class="logo-img"><span class="brand d-none d-sm-block">AULIA HASANAH MEDIKA</span></a></div>
+      <div class="d-flex align-items-center gap-3"><i class="fa-regular fa-bell fs-5 text-secondary" role="button"></i><div class="dropdown"><button class="btn border-0 dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false"><img src="https://i.pravatar.cc/40?u=leon" alt="Avatar" width="32" height="32" class="rounded-circle"><span class="d-none d-md-inline fw-semibold" style="color: var(--heading-color);">Leon Prasetya</span></button><ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="border-radius: var(--border-radius);"><li><a class="dropdown-item" href="#"><i class="fa-regular fa-user me-2"></i>Profil</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Keluar</a></li></ul></div></div>
+    </div>
+  </header>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-clipboard-list fs-4" style="color: var(--primary-color);"></i>
+        <h5 class="mb-0 fw-bold" style="color: var(--secondary-color);">Rekam Medis</h5>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="menu-title">Menu Utama</div>
+        <a class="nav-link" href="index.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a class="nav-link" href="pendaftaran.html"><i class="fa-regular fa-calendar-plus"></i> Pendaftaran</a>
+        <a class="nav-link" href="pasien.html"><i class="fa-solid fa-users"></i> Data Pasien</a>
+        <a class="nav-link" href="pegawai.html"><i class="fa-solid fa-id-card-clip"></i> Data Pegawai</a>
+
+        <div class="menu-title">Pelayanan</div>
+        <a class="nav-link" href="rawatJalan.html"><i class="fa-solid fa-person-walking"></i> Rawat Jalan</a>
+        <a class="nav-link" data-bs-toggle="collapse" href="#submenu-rawat-inap" role="button" aria-expanded="true" aria-controls="submenu-rawat-inap">
+            <i class="fa-solid fa-bed-pulse"></i>
+            <span>Rawat Inap</span>
+            <i class="fa-solid fa-chevron-down ms-auto"></i>
+        </a>
+        <div class="collapse show submenu-container" id="submenu-rawat-inap">
+            <ul class="nav flex-column">
+                <li><a class="nav-link submenu-link" href="ruangInap.html">Detail Ruangan</a></li>
+                <li><a class="nav-link submenu-link active" href="historyInap.html">Riwayat Pasien Inap</a></li>
+            </ul>
+        </div>
+        <a class="nav-link" href="farmasi.html"><i class="fa-solid fa-pills"></i> Farmasi</a>
+
+        <div class="menu-title">Laporan</div>
+        <a class="nav-link" href="laporan.html"><i class="fa-solid fa-file-invoice"></i> Laporan Kunjungan</a>
+      </nav>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <!-- Content -->
+    <main class="content">
+      <h1 class="page-title">Riwayat Pasien Rawat Inap</h1>
+
+      <div class="card content-card">
+        <div class="card-body">
+          <!-- Kontrol Filter & Pencarian -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-5">
+              <label for="dateRangeFilter" class="form-label small fw-semibold">Filter Berdasarkan Tanggal Masuk</label>
+              <input type="text" class="form-control" id="dateRangeFilter" placeholder="Pilih rentang tanggal...">
+            </div>
+            <div class="col-md-5">
+              <label for="patientSearch" class="form-label small fw-semibold">Cari Pasien</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="form-control" id="patientSearch" placeholder="Nama atau No. RM...">
+              </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-secondary w-100">Filter</button>
+            </div>
+          </div>
+          
+          <!-- Tabel Riwayat Pasien -->
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">No. RM</th>
+                  <th scope="col">Nama Pasien</th>
+                  <th scope="col">Ruangan</th>
+                  <th scope="col">Tgl Masuk</th>
+                  <th scope="col">Tgl Keluar</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- DATA INI AKAN DI-generate DARI BACKEND -->
+                <tr>
+                  <td class="fw-semibold">RME-00001</td>
+                  <td class="fw-semibold">Anisa Setyawati</td>
+                  <td>Anggrek 101</td>
+                  <td>15-08-2025</td>
+                  <td>20-08-2025</td>
+                  <td><span class="status-badge status-pulang">Sudah Pulang</span></td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2 action-buttons">
+                      <a href="pasienInap.html" class="btn btn-info btn-sm text-white" data-bs-toggle="tooltip" title="Lihat Catatan Perawatan">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Pasien">
+                        <button class="btn btn-warning btn-sm text-white" data-bs-toggle="modal" data-bs-target="#editInapModal" data-bs-placement="top" title="Edit Data" data-patient-name="Anisa Setyawati">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                      </span>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data Pasien">
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteInapModal" data-bs-placement="top" title="Hapus Riwayat" data-patient-name="Anisa Setyawati">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">RME-00002</td>
+                  <td class="fw-semibold">Rizal Fadillah</td>
+                  <td>Mawar 201</td>
+                  <td>18-08-2025</td>
+                  <td>-</td>
+                  <td><span class="status-badge status-dirawat">Masih Dirawat</span></td>
+                   <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2 action-buttons">
+                      <a href="pasienInap.html" class="btn btn-info btn-sm text-white" data-bs-toggle="tooltip" title="Lihat Catatan Perawatan">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Pasien">
+                        <button class="btn btn-warning btn-sm text-white" data-bs-toggle="modal" data-bs-target="#editInapModal" data-bs-placement="top" title="Edit Data" data-patient-name="Rizal Fadillah">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                      </span>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data Pasien">
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteInapModal" data-bs-placement="top" title="Hapus Riwayat" data-patient-name="Rizal Fadillah">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">RME-00004</td>
+                  <td class="fw-semibold">Budi Santoso</td>
+                  <td>Anggrek 101</td>
+                  <td>10-08-2025</td>
+                  <td>14-08-2025</td>
+                  <td><span class="status-badge status-pulang">Sudah Pulang</span></td>
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2 action-buttons">
+                      <a href="pasienInap.html" class="btn btn-info btn-sm text-white" data-bs-toggle="tooltip" title="Lihat Catatan Perawatan">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data Pasien">
+                        <button class="btn btn-warning btn-sm text-white" data-bs-toggle="modal" data-bs-target="#editInapModal" data-bs-placement="top" title="Edit Data" data-patient-name="Anisa Setyawati">
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                      </span>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data Pasien">
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteInapModal" data-bs-placement="top" title="Hapus Riwayat" data-patient-name="Anisa Setyawati">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Tambahkan riwayat pasien lainnya di sini -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginasi -->
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <span class="text-muted small">Menampilkan 1-10 dari 52 data</span>
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled"><a class="page-link" href="#">Sebelumnya</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                <li class="page-item"><a class="page-link" href="#">Selanjutnya</a></li>
+              </ul>
+            </nav>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===================================================================
+                    MODALS UNTUK AKSI RIWAYAT RAWAT INAP
+      ==================================================================== -->
+
+      <!-- Modal 2: Edit Data Rawat Inap -->
+      <div class="modal fade" id="editInapModal" tabindex="-1" aria-labelledby="editInapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="editInapModalLabel">Edit Data Rawat Inap</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Mengubah data untuk pasien: <strong id="editPatientName"></strong></p>
+              <form id="editInapForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="editEntryDate" class="form-label fw-semibold">Tanggal Masuk</label>
+                    <input type="date" class="form-control" id="editEntryDate">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="editDischargeDate" class="form-label fw-semibold">Tanggal Keluar</label>
+                    <input type="date" class="form-control" id="editDischargeDate">
+                  </div>
+                  <div class="col-12">
+                    <label for="editStatus" class="form-label fw-semibold">Status Pasien</label>
+                    <select class="form-select" id="editStatus">
+                        <option value="dirawat">Masih Dirawat</option>
+                        <option value="pulang">Sudah Pulang</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" form="editInapForm" class="btn btn-primary-custom">
+                <i class="fa-solid fa-save me-2"></i>Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal 3: Konfirmasi Hapus Riwayat -->
+      <div class="modal fade" id="deleteInapModal" tabindex="-1" aria-labelledby="deleteInapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="deleteInapModalLabel"><i class="fa-solid fa-triangle-exclamation me-2"></i> Konfirmasi Hapus</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p class="my-3">Apakah Anda yakin ingin menghapus riwayat rawat inap pasien <strong id="deletePatientName"></strong>? Tindakan ini tidak dapat dibatalkan.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteInapButton">Ya, Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="main-footer">
+    Copyright &copy; <span id="copyright-year"></span> &bull; Aplikasi Rekam Medis | <a href='#' title='Klinik Aulia Hasanah Medika' target='_blank'>Klinik Aulia Hasanah Medika</a>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // Skrip Tahun Copyright
+      document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+      // Skrip Sidebar Toggle
+      const btnSidebar = document.getElementById("btnSidebar");
+      const sidebar = document.getElementById("sidebar");
+      const backdrop = document.getElementById("backdrop");
+      if (btnSidebar && sidebar && backdrop) {
+        btnSidebar.addEventListener("click", () => {
+          sidebar.classList.toggle("show");
+          backdrop.classList.toggle("show");
+        });
+        backdrop.addEventListener("click", () => {
+          sidebar.classList.remove("show");
+          backdrop.classList.remove("show");
+        });
+      }
+
+      // Inisialisasi Tooltip Bootstrap
+      const tooltipTriggerList = [...document.querySelectorAll('[data-bs-toggle="tooltip"]')];
+      tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+      /**
+       * ===================================================================
+       * SKRIP BARU UNTUK MENGELOLA MODAL RIWAYAT RAWAT INAP
+       * ===================================================================
+       */
+      const detailModal = document.getElementById('detailInapModal');
+      if (detailModal) {
+          detailModal.addEventListener('show.bs.modal', event => {
+              const button = event.relatedTarget;
+              const patientName = button.dataset.patientName;
+              detailModal.querySelector('#detailPatientName').textContent = patientName;
+          });
+      }
+
+      const editModal = document.getElementById('editInapModal');
+      if (editModal) {
+          editModal.addEventListener('show.bs.modal', event => {
+              const button = event.relatedTarget;
+              const patientName = button.dataset.patientName;
+              editModal.querySelector('#editPatientName').textContent = patientName;
+              // Di aplikasi nyata, Anda akan mengambil data tgl masuk/keluar dari database dan mengisi value form di sini
+          });
+      }
+
+      const deleteModal = document.getElementById('deleteInapModal');
+      if (deleteModal) {
+          deleteModal.addEventListener('show.bs.modal', event => {
+              const button = event.relatedTarget;
+              const patientName = button.dataset.patientName;
+              deleteModal.querySelector('#deletePatientName').textContent = patientName;
+          });
+      }
+      // CATATAN: Untuk filter tanggal yang lebih canggih,
+      // Anda akan membutuhkan library seperti "flatpickr" atau "daterangepicker".
+      // Kode ini hanya placeholder.
+    });
+  </script>
+</body>
+</html>

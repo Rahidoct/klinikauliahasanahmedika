@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Klinik - Aulia Hasanah Medika</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/logo.png" rel="icon">
+  <link href="assets/img/logo.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    /* Blog Details */
+    .blog-details .article-image {
+    margin-bottom: 20px;
+    }
+    .blog-details .title {
+    font-size: 28px;
+    font-weight: 700;
+    padding: 0;
+    margin: 0 0 20px 0;
+    color: var(--heading-color);
+    }
+    .blog-details .meta-top {
+    margin-bottom: 20px;
+    }
+    .blog-details .meta-top ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    }
+    .blog-details .meta-top ul li+li {
+    padding-left: 20px;
+    }
+    .blog-details .meta-top i {
+    font-size: 16px;
+    margin-right: 8px;
+    line-height: 0;
+    color: var(--accent-color);
+    }
+    .blog-details .meta-top a {
+    color: #6c757d;
+    font-size: 14px;
+    display: inline-block;
+    line-height: 20px;
+    }
+    .blog-details .content {
+    font-size: 15px;
+    }
+    .blog-details .content h3 {
+    font-size: 22px;
+    margin-top: 30px;
+    font-weight: 700;
+    }
+    .blog-details .content blockquote {
+    overflow: hidden;
+    background-color: #f6f6f6;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    }
+    .blog-details .content blockquote p {
+    color: var(--default-color);
+    line-height: 1.6;
+    margin-bottom: 0;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 500;
+    }
+    .blog-details .meta-bottom {
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    }
+    .blog-details .meta-bottom i {
+    color: var(--heading-color);
+    display: inline;
+    }
+    .blog-details .meta-bottom ul {
+    list-style: none;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    }
+    .blog-details .meta-bottom ul li {
+    display: inline-block;
+    }
+    .blog-details .meta-bottom ul a {
+    display: inline-block;
+    font-size: 14px;
+    background: #f6f6f6;
+    color: #6c757d;
+    padding: 6px 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: 0.3s;
+    }
+    .blog-details .meta-bottom ul a:hover {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    }
+
+    /* Sidebar */
+    .sidebar {
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    }
+    .sidebar .sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0;
+    margin: 0 0 15px 0;
+    color: var(--heading-color);
+    position: relative;
+    }
+    .sidebar .sidebar-item {
+    margin-bottom: 30px;
+    }
+    .sidebar .search-form form {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 3px 10px;
+    position: relative;
+    border-radius: 4px;
+    }
+    .sidebar .search-form form input[type=text] {
+    border: 0;
+    padding: 4px;
+    width: calc(100% - 40px);
+    }
+    .sidebar .search-form form button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    background: none;
+    font-size: 16px;
+    padding: 0 15px;
+    margin: -1px;
+    color: var(--heading-color);
+    transition: 0.3s;
+    border-radius: 0 4px 4px 0;
+    }
+    .sidebar .search-form form button:hover {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    }
+
+    .sidebar .categories ul {
+    list-style: none;
+    padding: 0;
+    }
+    .sidebar .categories ul li+li {
+    margin-top: 10px;
+    }
+    .sidebar .categories ul a {
+    color: var(--default-color);
+    transition: 0.3s;
+    display: inline-block;
+    }
+    .sidebar .categories ul a:hover {
+    color: var(--accent-color);
+    }
+
+    /* Sidebar Tags - Tampilan Baru */
+    .sidebar .tags .tags-list {
+    list-style: none;
+    padding: 0;
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    flex-wrap: wrap; /* Memastikan tags akan turun ke baris baru jika tidak muat */
+    gap: 8px; /* Memberi jarak antar tags */
+    }
+
+    .sidebar .tags .tags-list li {
+    margin: 0; /* Hapus margin default jika ada */
+    }
+
+    .sidebar .tags .tags-list a {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #f3f4f6; /* Warna latar belakang yang lembut */
+    color: #4b5563; /* Warna teks yang kontras namun tidak terlalu tajam */
+    padding: 6px 14px;
+    border-radius: 20px; /* Membuat bentuk kapsul/pill */
+    border: 1px solid #e5e7eb; /* Border halus */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    }
+
+    .sidebar .tags .tags-list a:hover {
+    background-color: var(--accent-color); /* Menggunakan warna aksen tema saat hover */
+    color: #ffffff; /* Warna teks putih saat hover */
+    border-color: var(--accent-color);
+    transform: translateY(-2px); /* Efek sedikit terangkat saat hover */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Bayangan halus saat hover */
+    }
+
+    .sidebar .categories ul a span {
+    padding-left: 5px;
+    color: #aab2b9;
+    font-size: 14px;
+    }
+    .sidebar .tags ul a {
+    border: 1px solid #e1e1e1;
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    }
+    .sidebar .recent-posts .post-item {
+    display: flex;
+    }
+    .sidebar .recent-posts .post-item+.post-item {
+    margin-top: 15px;
+    }
+    .sidebar .recent-posts img {
+    width: 80px;
+    margin-right: 15px;
+    object-fit: cover;
+    border-radius: 4px;
+    }
+    .sidebar .recent-posts h4 {
+    font-size: 15px;
+    font-weight: 600;
+    }
+    .sidebar .recent-posts h4 a {
+    color: var(--heading-color);
+    transition: 0.3s;
+    }
+    .sidebar .recent-posts h4 a:hover {
+    color: var(--accent-color);
+    }
+    .sidebar .recent-posts time {
+    display: block;
+    font-style: italic;
+    font-size: 14px;
+    color: #aab2b9;
+    }
+  </style>
+
+  <!-- =======================================================
+  * Template Name: MediTrust
+  * Template URL: https://bootstrapmade.com/meditrust-bootstrap-hospital-website-template/
+  * Updated: Jul 04 2025 with Bootstrap v5.3.7
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.webp" alt=""> -->
+        <img src="assets/img/logo.png" alt="">
+
+        <h1 class="sitename">Aulia Hasanah Medika</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="index.html#home-about">Tentang Klinik</a></li>
+          <li class="dropdown"><a href="#" class="active"><span>Portal</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="berita-informasi.html">Berita & Informasi</a></li>
+              <li><a href="karir.html">Karir</a></li>
+              <li><a href="terms.html">Syarat & Ketentuan</a></li>
+              <li><a href="privacy.html">Kebijakan Privasi</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#featured-departments">Layanan</a></li>
+          <li><a href="index.html#doctors">Dokter</a></li>
+          <li><a href="testimonials.html">Testimoni</a></li>
+          <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="#">Daftar Online</a>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="breadcrumbs">
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#"><i class="bi bi-house"></i> Beranda</a></li>
+                <li class="breadcrumb-item"><a href="#">Portal</a></li>
+                <li class="breadcrumb-item active current">Berita & Informasi Kesehatan</li>
+            </ol>
+            </nav>
+        </div>
+
+    <div class="title-wrapper">
+        <!-- Judul ini bisa di-skip jika Anda ingin judul artikel di bawah yang jadi H1 -->
+        <h1>Tips Kesehatan</h1>
+        <p>Artikel informatif dan tips kesehatan dari tim medis kami.</p>
+    </div>
+    </div><!-- End Page Title -->
+
+    <!-- Section Detail Blog -->
+    <section id="blog-details" class="blog-details section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row g-5">
+
+        <div class="col-lg-8">
+
+            <article class="article-details">
+
+            <div class="article-image">
+                <!-- GANTI GAMBAR INI dengan gambar utama artikel -->
+                <img src="assets/img/health/poli-gigi.webp" alt="Tips Kesehatan Gigi Anak" class="img-fluid" style="border-radius: 30px;">
+            </div>
+
+            <h2 class="title">5 Cara Mudah Menjaga Kesehatan Gigi dan Mulut pada Anak</h2>
+
+            <div class="meta-top">
+                <ul>
+                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="#">drg. Arum Almalivia Saefulhadi</a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="#"><time datetime="2025-08-18">18 Agustus 2025</time></a></li>
+                <li class="d-flex align-items-center"><i class="bi bi-folder2-open"></i> <a href="#">Tips Kesehatan</a></li>
+                </ul>
+            </div>
+
+            <div class="content">
+                <p>
+                Membiasakan anak untuk merawat gigi dan mulut sejak dini adalah investasi tak ternilai untuk kesehatan mereka di masa depan. Gigi yang sehat tidak hanya penting untuk mengunyah makanan, tetapi juga berpengaruh pada kemampuan bicara dan rasa percaya diri anak.
+                </p>
+
+                <p>
+                Namun, seringkali orang tua bingung bagaimana cara yang tepat untuk memulai kebiasaan baik ini. Berikut adalah 5 cara mudah yang bisa Anda terapkan, dirangkum oleh tim medis kami.
+                </p>
+
+                <h3>Pentingnya Kebiasaan Sejak Dini</h3>
+                <p>
+                Gigi susu pada anak memiliki peran penting sebagai penunjuk jalan bagi gigi permanen yang akan tumbuh nantinya. Jika gigi susu rusak atau tanggal sebelum waktunya, ini dapat menyebabkan masalah pada susunan gigi permanen.
+                </p>
+
+                <blockquote>
+                <p>
+                    "Jangan menunggu hingga anak mengeluh sakit gigi. Pencegahan adalah kunci utama dalam menjaga kesehatan gigi dan mulut anak."
+                </p>
+                </blockquote>
+
+                <p>Berikut adalah langkah-langkah praktis yang bisa Anda ikuti:</p>
+                
+                <ol>
+                <li><strong>Pilih Sikat dan Pasta Gigi yang Tepat.</strong> Gunakan sikat gigi dengan bulu yang lembut dan kepala sikat yang sesuai dengan ukuran mulut anak. Untuk pasta gigi, gunakan yang mengandung fluoride dengan takaran sebesar biji beras untuk anak di bawah 3 tahun, dan sebesar kacang polong untuk anak usia 3-6 tahun.</li>
+                <li><strong>Jadwalkan Waktu Sikat Gigi Bersama.</strong> Jadikan sikat gigi sebagai aktivitas yang menyenangkan. Lakukan bersama-sama di pagi hari setelah sarapan dan malam hari sebelum tidur. Putar lagu favorit atau gunakan sikat gigi dengan karakter kartun kesukaan anak.</li>
+                <li><strong>Perhatikan Asupan Makanan dan Minuman.</strong> Batasi konsumsi makanan dan minuman manis seperti permen, cokelat, dan minuman bersoda. Perbanyak konsumsi buah, sayur, dan air putih yang baik untuk kesehatan gigi.</li>
+                <li><strong>Ajarkan Cara Menyikat Gigi yang Benar.</strong> Dampingi anak saat menyikat gigi. Ajarkan mereka untuk menyikat seluruh permukaan gigi dengan gerakan memutar yang lembut selama kurang lebih 2 menit.</li>
+                <li><strong>Jadwalkan Kunjungan Rutin ke Dokter Gigi.</strong> Ajak anak ke dokter gigi setiap 6 bulan sekali untuk pemeriksaan rutin, bahkan jika tidak ada keluhan. Ini akan membantu anak terbiasa dengan lingkungan klinik dan memungkinkan deteksi dini jika ada masalah.</li>
+                </ol>
+
+                <p>
+                Dengan menerapkan kebiasaan-kebiasaan di atas, Anda telah membantu meletakkan pondasi yang kuat untuk senyum sehat buah hati Anda. Jika Anda memiliki pertanyaan lebih lanjut atau ingin menjadwalkan pemeriksaan, jangan ragu untuk menghubungi <a href="#contact">Poli Gigi Klinik Aulia Hasanah Medika</a>.
+                </p>
+
+            </div><!-- End isi artikel -->
+
+            <div class="meta-bottom">
+                <i class="bi bi-tags"></i>
+                <ul class="tags">
+                <li><a href="#">Anak</a></li>
+                <li><a href="#">Gigi</a></li>
+                <li><a href="#">Pencegahan</a></li>
+                </ul>
+            </div><!-- End meta bawah -->
+
+            </article><!-- End artikel -->
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="sidebar">
+
+            <div class="sidebar-item search-form">
+                <h3 class="sidebar-title">Cari</h3>
+                <form action="" class="mt-3">
+                <input type="text" placeholder="Cari artikel...">
+                <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div><!-- End sidebar search form-->
+
+            <div class="sidebar-item categories">
+                <h3 class="sidebar-title">Kategori</h3>
+                <ul class="mt-3">
+                <li><a href="#">Tips Kesehatan <span>(15)</span></a></li>
+                <li><a href="#">Info Penyakit <span>(8)</span></a></li>
+                <li><a href="#">Kesehatan Gigi <span>(5)</span></a></li>
+                <li><a href="#">Info Klinik <span>(3)</span></a></li>
+                <li><a href="#">Ibu & Anak <span>(7)</span></a></li>
+                </ul>
+            </div><!-- End sidebar categories-->
+
+            <div class="sidebar-item recent-posts">
+                <h3 class="sidebar-title">Berita Terkini</h3>
+                <div class="mt-3">
+
+                <div class="post-item mt-3">
+                    <img src="assets/img/health/cardiology-3.webp"alt="">
+                    <div>
+                    <h4><a href="#">Waspada Demam Berdarah di Musim Hujan: Kenali Gejalanya</a></h4>
+                    <time datetime="2025-08-15">15 Agustus 2025</time>
+                    </div>
+                </div><!-- End recent post item-->
+
+                <div class="post-item">
+                    <img src="assets/img/health/pediatrics-3.webp" alt="">
+                    <div>
+                    <h4><a href="#">Informasi Jadwal Vaksinasi Polio Tambahan di Klinik Kami</a></h4>
+                    <time datetime="2025-08-12">12 Agustus 2025</time>
+                    </div>
+                </div><!-- End recent post item-->
+
+                <div class="post-item">
+                    <img src="assets/img/health/pediatrics-2.webp" alt="">
+                    <div>
+                    <h4><a href="#">Pentingnya Imunisasi Lengkap untuk Mencegah Penyakit</a></h4>
+                    <time datetime="2025-08-10">10 Agustus 2025</time>
+                    </div>
+                </div><!-- End recent post item-->
+
+                </div>
+            </div><!-- End sidebar recent posts-->
+
+            <div class="sidebar-item tags">
+                <h3 class="sidebar-title">Tags</h3>
+                <ul class="mt-3 tags-list">
+                    <li><a href="#">Kesehatan</a></li>
+                    <li><a href="#">Anak</a></li>
+                    <li><a href="#">Gigi</a></li>
+                    <li><a href="#">Pencegahan</a></li>
+                    <li><a href="#">Imunisasi</a></li>
+                    <li><a href="#">BPJS</a></li>
+                    <li><a href="#">Keluarga</a></li>
+                    <li><a href="#">Info Klinik</a></li>
+                </ul>
+            </div><!-- End sidebar tags-->
+
+            </div><!-- End Sidebar -->
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </section><!-- End Section Detail Blog -->
+
+    <!-- Call To Action Section -->
+    <section id="call-to-action" class="call-to-action section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <!-- Call to Action (CTA) Section -->
+        <div class="emergency-alert" data-aos="zoom-in" data-aos-delay="500">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <div class="emergency-content">
+                <div class="emergency-icon">
+                  <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div class="emergency-text">
+                  <h4>Butuh Konsultasi Lebih Lanjut?</h4>
+                  <p>Hubungi Klinik kami untuk mendapatkan bantuan medis segera.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 text-lg-end text-center mt-3 mt-lg-0">
+              <a href="tel:085121219995" class="emergency-btn">
+                <i class="bi bi-telephone-fill"></i>
+                Hubungi 085121219995
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- End CTA Section -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer position-relative light-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+
+        <!-- Kolom 1: Tentang Klinik (Lebih besar) -->
+        <div class="col-lg-4 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">Klinik Aulia Hasanah Medika</span>
+          </a>
+          <p class="mt-3">Mitra terpercaya untuk layanan kesehatan Anda dan keluarga. Kami berkomitmen memberikan pelayanan yang profesional, terjangkau, dan sepenuh hati.</p>
+          <div class="footer-contact pt-3">
+            <p>Jln. Pangeran Arya Salingsingan, Blok Baujaya, Rt/Rw 005/003, Ds. Warukawung, Kec. Depok, Kab. Cirebon</p>
+            <p class="mt-3"><strong>Telepon:</strong> <span>+62 851 2121 9995</span></p>
+            <p><strong>Email:</strong> <span>hasanahmedika2024@gmail.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <!-- <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a> -->
+            <a href="https://www.instagram.com/klinik.auliahasanahmedika/" title="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="https://wa.me/6285121219995" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.tiktok.com/@klinikauliahasanahmedika" title="TikTok"><i class="bi bi-tiktok"></i></a>
+          </div>
+        </div>
+
+        <!-- Kolom 2: Tautan Navigasi -->
+        <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Menu Navigasi</h4>
+          <ul>
+            <li><a href="#hero">Beranda</a></li>
+            <li><a href="#about">Profil</a></li>
+            <li><a href="#doctors">Dokter</a></li>
+            <li><a href="#testimonials">Testimonial</a></li>
+            <li><a href="#contact">Kontak</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 3: Layanan Kami -->
+        <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Layanan Kami</h4>
+          <ul>
+            <li><a href="#">Poli Umum</a></li>
+            <li><a href="#">Poli Gigi</a></li>
+            <li><a href="#">Poli KIA</a></li>
+            <li><a href="#">Unit Gawat Darurat</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 4: Portal -->
+        <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Portal</h4>
+          <ul>
+            <li><a href="#">Berita & Informasi</a></li>
+            <li><a href="#">Tips Kesehatan</a></li>
+            <li><a href="#">Karir</a></li>
+            <li><a href="#">Syarat & Ketentuan</a></li>
+            <li><a href="#">Kebijakan Privasi</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 5: Jam Operasional -->
+        <div class="col-lg-2 col-md-6 footer-links">
+          <h4>Jam Operasional</h4>
+          <p><strong>Poli Klinik:</strong><br>
+            Senin - Sabtu<br>08:00 - 20:00 WIB
+          </p>
+          <p class="mt-2">
+            <strong>Poli Gigi:</strong><br>
+            Senin - Kamis<br>08:00 - 14:00 WIB
+          </p>
+          <!-- <p class="mt-2">
+            <strong>UGD:</strong> Buka 24 Jam
+          </p> -->
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>2024 - <span id="copyright-year"></span> © <span>Copyright</span> <strong class="px-1 sitename">Klinik Aulia Hasanah Medika.</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://rahidoct.github.io/web_portofolio/">Rahidoct</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

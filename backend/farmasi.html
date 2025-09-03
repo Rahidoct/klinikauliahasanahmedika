@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistem Rekam Medis Klinik Aulia Hasanah Medika">
+  <title>Farmasi — Aplikasi Rekam Medis</title>
+
+  <!-- Favicon dari Logo -->
+  <link rel="icon" href="../assets/img/logo.png">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===================================================================
+       STYLES DARI HALAMAN UTAMA (TETAP SAMA)
+       =================================================================== */
+    :root {
+      --primary-color: #d63384; --secondary-color: #0d3d8a; --accent-color: #e85aa7;
+      --heading-color: #1a202c; --text-color: #4a5568; --light-gray: #f8f9fa;
+      --border-color: #e9ecef; --sidebar-bg: #ffffff;
+      --app-bg: linear-gradient(180deg, #fdf6f9 0%, #f4f6fc 100%);
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --border-radius: 12px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-color); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; }
+    /* (Salin semua style umum lainnya dari halaman sebelumnya di sini agar tidak terlalu panjang) */
+    .topbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; height: 70px; }
+    .topbar .brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px; color: var(--secondary-color); }
+    .topbar .logo-img { width: 36px; height: auto; max-height: 36px; }
+    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: var(--transition); display: flex; flex-direction: column; }
+    .sidebar-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
+    .sidebar-nav { padding: 1rem 0.75rem; flex-grow: 1; overflow-y: auto; }
+    .sidebar .menu-title { font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0.75rem 0.5rem; font-weight: 700; }
+    .sidebar .nav-link { color: var(--text-color); border-radius: 8px; margin: 0.2rem 0; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; transition: var(--transition); }
+    .sidebar .nav-link .fa-solid, .sidebar .nav-link .fa-regular { font-size: 1rem; width: 20px; text-align: center; transition: var(--transition); }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover { background-image: linear-gradient(90deg, var(--primary-color), var(--accent-color)); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3); }
+    .sidebar .nav-link.active i, .sidebar .nav-link:hover i { transform: scale(1.1); }
+    .sidebar .nav-link .fa-chevron-down { transition: transform 0.3s ease; font-size: 0.8rem; }
+    .sidebar .nav-link:not(.collapsed) .fa-chevron-down { transform: rotate(180deg); }
+    .sidebar .submenu-container { position: relative; padding-left: 26px; margin-left: 1rem; }
+    .sidebar .submenu-container::before { content: ''; position: absolute; left: 0; top: 0; bottom: 10px; width: 2px; background-color: var(--border-color); border-radius: 2px; }
+    .sidebar .submenu-container ul { list-style: none; padding-left: 1rem; }
+    .sidebar .submenu-link { color: var(--text-color); padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.8rem; position: relative; }
+    .sidebar .submenu-link::before { content: ''; width: 6px; height: 6px; background-color: #cbd5e0; border-radius: 50%; transition: var(--transition); }
+    .sidebar .submenu-link:hover { background-color: #fdf6f9; color: var(--primary-color); box-shadow: none; }
+    .sidebar .submenu-link:hover::before { background-color: var(--primary-color); transform: scale(1.2); }
+    .app { display: flex; flex: 1; }
+    .content { flex: 1; padding: 2.5rem; animation: fadeInUp 0.5s ease-out; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--heading-color); margin-bottom: 2rem; position: relative; }
+    .content-card { border: 0; border-radius: var(--border-radius); box-shadow: var(--card-shadow); background: var(--sidebar-bg); border: 1px solid var(--border-color); }
+    .main-footer { padding: 1.5rem; text-align: center; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: auto; }
+    .main-footer a { color: var(--primary-color); text-decoration: none; }
+    .main-footer a:hover { text-decoration: underline; }
+    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.6rem 1.5rem; font-weight: 600; }
+    .btn-primary-custom:hover { background-color: #c22572; border-color: #c22572; }
+
+    /* STYLING KHUSUS HALAMAN FARMASI */
+    .nav-tabs .nav-link {
+        font-weight: 700;
+        color: var(--text-color);
+        border: 0;
+        border-bottom: 3px solid transparent;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        background-color: transparent;
+    }
+    .table-responsive { border: 1px solid var(--border-color); border-radius: var(--border-radius); }
+    .table { margin-bottom: 0; }
+    .table thead th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.8rem; color: var(--heading-color); background-color: var(--light-gray); border-bottom: 2px solid var(--border-color); }
+    .table tbody td { vertical-align: middle; color: var(--text-color); }
+    .table-hover tbody tr:hover { background-color: #fdf6f9; }
+    .status-badge { font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; }
+    .status-menunggu { background-color: #ebf4ff; color: #4299e1; }
+    .status-disiapkan { background-color: #fffaf0; color: #ed8936; }
+    .status-siap { background-color: #f0fff4; color: #48bb78; }
+    .status-diambil { background-color: #edf2f7; color: #718096; }
+    .stock-ok { background-color: #e6fffa; color: #38b2ac; }
+    .stock-low { background-color: #fffaf0; color: #ed8936; }
+    .stock-out { background-color: rgba(214, 51, 132, 0.1); color: var(--primary-color); }
+
+    @media (max-width: 992px) {
+      .sidebar { position: fixed; z-index: 1040; height: 100vh; left: -280px; }
+      .sidebar.show { left: 0; }
+      .backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: none; z-index: 1030; }
+      .backdrop.show { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar px-3">
+    <!-- (Isi Topbar sama seperti halaman sebelumnya) -->
+    <div class="container-fluid d-flex align-items-center justify-content-between h-100"><div class="d-flex align-items-center gap-3"><button class="btn btn-outline-secondary d-lg-none" id="btnSidebar" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button><a class="d-flex align-items-center gap-2 text-decoration-none" href="#"><img src="../assets/img/logo.png" alt="Logo Klinik Aulia Hasanah Medika" class="logo-img"><span class="brand d-none d-sm-block">AULIA HASANAH MEDIKA</span></a></div><div class="d-flex align-items-center gap-3"><i class="fa-regular fa-bell fs-5 text-secondary" role="button"></i><div class="dropdown"><button class="btn border-0 dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false"><img src="https://i.pravatar.cc/40?u=leon" alt="Avatar" width="32" height="32" class="rounded-circle"><span class="d-none d-md-inline fw-semibold" style="color: var(--heading-color);">Leon Prasetya</span></button><ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="border-radius: var(--border-radius);"><li><a class="dropdown-item" href="#"><i class="fa-regular fa-user me-2"></i>Profil</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item text-danger" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Keluar</a></li></ul></div></div></div>
+  </header>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-clipboard-list fs-4" style="color: var(--primary-color);"></i>
+        <h5 class="mb-0 fw-bold" style="color: var(--secondary-color);">Rekam Medis</h5>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="menu-title">Menu Utama</div>
+        <a class="nav-link" href="index.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a class="nav-link" href="pendaftaran.html"><i class="fa-regular fa-calendar-plus"></i> Pendaftaran</a>
+        <a class="nav-link" href="pasien.html"><i class="fa-solid fa-users"></i> Data Pasien</a>
+        <a class="nav-link" href="pegawai.html"><i class="fa-solid fa-id-card-clip"></i> Data Pegawai</a>
+
+        <div class="menu-title">Pelayanan</div>
+        <a class="nav-link" href="rawatJalan.html"><i class="fa-solid fa-person-walking"></i> Rawat Jalan</a>
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#submenu-rawat-inap" role="button" aria-expanded="false" aria-controls="submenu-rawat-inap">
+            <i class="fa-solid fa-bed-pulse"></i>
+            <span>Rawat Inap</span>
+            <i class="fa-solid fa-chevron-down ms-auto"></i>
+        </a>
+        <div class="collapse submenu-container" id="submenu-rawat-inap">
+            <ul class="nav flex-column">
+                <li><a class="nav-link submenu-link" href="ruangInap.html">Detail Ruangan</a></li>
+                <li><a class="nav-link submenu-link" href="historyInap.html">Riwayat Pasien Inap</a></li>
+            </ul>
+        </div>
+        <a class="nav-link active" href="farmasi.html"><i class="fa-solid fa-pills"></i> Farmasi</a>
+
+        <div class="menu-title">Laporan</div>
+        <a class="nav-link" href="laporan.html"><i class="fa-solid fa-file-invoice"></i> Laporan Kunjungan</a>
+      </nav>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <!-- Content -->
+    <main class="content">
+      <h1 class="page-title">Manajemen Farmasi</h1>
+
+      <div class="card content-card">
+        <div class="card-header bg-transparent border-0 p-0">
+          <!-- Navigasi Tab -->
+          <ul class="nav nav-tabs nav-tabs-bordered px-4 pt-3" id="pharmacyTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="queue-tab" data-bs-toggle="tab" data-bs-target="#queue-tab-pane" type="button" role="tab" aria-controls="queue-tab-pane" aria-selected="true">
+                <i class="fa-solid fa-receipt me-2"></i>Antrian Resep
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="stock-tab" data-bs-toggle="tab" data-bs-target="#stock-tab-pane" type="button" role="tab" aria-controls="stock-tab-pane" aria-selected="false">
+                <i class="fa-solid fa-boxes-stacked me-2"></i>Stok Obat
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="tab-content pt-4" id="pharmacyTabsContent">
+            
+            <!-- Isi Tab 1: Antrian Resep -->
+            <div class="tab-pane fade show active" id="queue-tab-pane" role="tabpanel" aria-labelledby="queue-tab" tabindex="0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">No. Resep</th>
+                      <th scope="col">Nama Pasien</th>
+                      <th scope="col">No. RM</th>
+                      <th scope="col">Dokter</th>
+                      <th scope="col">Status</th>
+                      <th scope="col" class="text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="prescriptionQueue">
+                    <tr data-status="siap">
+                      <td class="fw-semibold">RSP-20250821-001</td>
+                      <td data-patient-name="Anisa Setyawati">Anisa Setyawati</td>
+                      <td>RME-00001</td>
+                      <td>dr. Budi</td>
+                      <td><span class="status-badge status-siap">Siap Diambil</span></td>
+                      <td class="text-center action-cell">
+                        <!-- Konten akan di-generate oleh JS, tapi kita buat contohnya -->
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-success btn-sm fw-semibold action-btn">Serahkan Obat</button>
+                            <button class="btn btn-outline-secondary btn-sm action-btn" data-action="call"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-status="disiapkan">
+                      <td class="fw-semibold">RSP-20250821-002</td>
+                      <td data-patient-name="Rizal Fadillah">Rizal Fadillah</td>
+                      <td>RME-00002</td>
+                      <td>drg. Amanda</td>
+                      <td><span class="status-badge status-disiapkan">Sedang Disiapkan</span></td>
+                      <td class="text-center action-cell">
+                        <button class="btn btn-warning btn-sm fw-semibold text-dark action-btn">Tandai Siap</button>
+                      </td>
+                    </tr>
+                    <tr data-status="menunggu">
+                      <td class="fw-semibold">RSP-20250821-003</td>
+                      <td data-patient-name="Putri Melati">Putri Melati</td>
+                      <td>RME-00003</td>
+                      <td>dr. Citra</td>
+                      <td><span class="status-badge status-menunggu">Menunggu</span></td>
+                      <td class="text-center action-cell">
+                        <button class="btn btn-primary-custom btn-sm fw-semibold action-btn" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#prescriptionModal"
+                                data-patient-name="Putri Melati"
+                                data-doctor-name="dr. Citra"
+                                data-prescription='[{"name":"Paracetamol Syrup","qty":"1 Botol","signa":"3x1 sdt"},{"name":"Antibiotik X","qty":"10 Tablet","signa":"2x1 sesudah makan"}]'>
+                            Siapkan Obat
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Isi Tab 2: Stok Obat -->
+            <div class="tab-pane fade" id="stock-tab-pane" role="tabpanel" aria-labelledby="stock-tab" tabindex="0">
+              <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <div class="col-12 col-md-5">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" placeholder="Cari nama atau kode obat...">
+                  </div>
+                </div>
+                <button class="btn btn-primary-custom fw-semibold mt-3 mt-md-0" data-bs-toggle="modal" data-bs-target="#addDrugModal">
+                  <i class="fa-solid fa-plus me-2"></i>Tambah Obat Baru
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Kode Obat</th>
+                      <th scope="col">Nama Obat</th>
+                      <th scope="col">Kategori</th>
+                      <th scope="col">Total Stok</th>
+                      <th scope="col">Satuan</th>
+                      <th scope="col">Status Stok</th>
+                      <th scope="col" class="text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- DATA INI DI-generate DARI BACKEND -->
+                    <tr>
+                      <td class="fw-semibold">PARA500</td>
+                      <td>Paracetamol 500mg</td>
+                      <td>Analgesik</td>
+                      <td class="fw-bold">1.250</td>
+                      <td>Tablet</td>
+                      <td><span class="status-badge stock-ok">Tersedia</span></td>
+                      <td class="text-center">
+                        <button class="btn btn-outline-secondary btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#stockDetailModal"
+                                data-drug-name="Paracetamol 500mg"
+                                data-category="Analgesik"
+                                data-batches='[{"batch":"P2401A","stock":500,"entry":"2025-01-15","expiry":"2027-01-15"},{"batch":"P2408B","stock":750,"entry":"2025-08-01","expiry":"2027-08-01"}]'>
+                            <i class="fa-solid fa-list-ol me-1"></i> Batch
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">AMOX500</td>
+                      <td>Amoxicillin 500mg</td>
+                      <td>Antibiotik</td>
+                      <td class="fw-bold">80</td>
+                      <td>Kapsul</td>
+                      <td><span class="status-badge stock-low">Stok Menipis</span></td>
+                       <td class="text-center">
+                         <button class="btn btn-outline-secondary btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#stockDetailModal"
+                                data-drug-name="Amoxicillin 500mg"
+                                data-category="Antibiotik"
+                                data-batches='[{"batch":"A2312C","stock":80,"entry":"2024-12-10","expiry":"2026-12-10"}]'>
+                            <i class="fa-solid fa-list-ol me-1"></i> Batch
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-semibold">OBH001</td>
+                      <td>OBH Combi Batuk Flu</td>
+                      <td>Obat Batuk & Flu</td>
+                      <td class="fw-bold">0</td>
+                      <td>Botol</td>
+                      <td><span class="status-badge stock-out">Habis</span></td>
+                       <td class="text-center">
+                         <button class="btn btn-outline-secondary btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#stockDetailModal"
+                                data-drug-name="OBH Combi Batuk Flu"
+                                data-category="Obat Batuk & Flu"
+                                data-batches='[]'>
+                            <i class="fa-solid fa-list-ol me-1"></i> Batch
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- PERUBAHAN BARU: Modal untuk Menampilkan & Memproses Resep -->
+      <div class="modal fade" id="prescriptionModal" tabindex="-1" aria-labelledby="prescriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="prescriptionModalLabel">Detail Resep</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                Pasien: <strong id="modalPatientName"></strong><br>
+                Dokter: <strong id="modalDoctorName"></strong>
+              </div>
+              <hr>
+              <h6 class="fw-semibold">Rincian Obat:</h6>
+              <ul class="list-group list-group-flush" id="modalPrescriptionList">
+                <!-- Isi resep akan di-generate oleh JavaScript -->
+                <li class="list-group-item">Paracetamol 500mg - 10 Tablet (3x1 sesudah makan)</li>
+                <li class="list-group-item">Ambroxol Syrup - 1 Botol (3x1 sendok teh)</li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              <button type="button" class="btn btn-warning text-dark fw-semibold" id="markAsPreparedBtn">
+                <i class="fa-solid fa-check me-2"></i>Tandai Sudah Disiapkan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERUBAHAN BARU: Modal untuk Detail Stok & Manajemen Batch (FIFO) -->
+      <div class="modal fade" id="stockDetailModal" tabindex="-1" aria-labelledby="stockDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="stockDetailModalLabel">Manajemen Stok: <span class="text-primary" id="drugNameLabel"></span></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-muted">Daftar batch diurutkan berdasarkan tanggal kedaluwarsa terdekat (prinsip FIFO).</p>
+              <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-sm btn-primary-custom" data-bs-toggle="modal" data-bs-target="#batchFormModal">
+                    <i class="fa-solid fa-plus me-2"></i>Tambah Batch Baru
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>No. Batch</th>
+                      <th>Stok</th>
+                      <th>Tgl Masuk</th>
+                      <th class="text-danger">Tgl Kedaluwarsa</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="batchList">
+                    <!-- Data batch akan di-generate oleh JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERUBAHAN BARU: Modal untuk Tambah Obat Baru -->
+      <div class="modal fade" id="addDrugModal" tabindex="-1" aria-labelledby="addDrugModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="addDrugModalLabel"><i class="fa-solid fa-plus me-2"></i>Tambah Obat Baru ke Inventaris</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="addDrugForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="drugCode" class="form-label fw-semibold">Kode Obat</label>
+                    <input type="text" class="form-control" id="drugCode" placeholder="Contoh: PARA500" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="drugUnit" class="form-label fw-semibold">Satuan</label>
+                    <input type="text" class="form-control" id="drugUnit" placeholder="Contoh: Tablet, Botol, Kapsul" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="drugName" class="form-label fw-semibold">Nama Obat & Dosis</label>
+                    <input type="text" class="form-control" id="drugName" placeholder="Contoh: Paracetamol 500mg" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="drugCategory" class="form-label fw-semibold">Kategori Obat</label>
+                    <input type="text" class="form-control" id="drugCategory" placeholder="Contoh: Analgesik, Antibiotik">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" form="addDrugForm" class="btn btn-primary-custom">
+                <i class="fa-solid fa-save me-2"></i>Simpan Obat
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERUBAHAN BARU: Modal untuk Form Tambah/Edit Batch -->
+      <div class="modal fade" id="batchFormModal" tabindex="-1" aria-labelledby="batchFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="batchFormModalLabel">Tambah Batch Baru</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Menambah batch untuk obat: <strong id="batchFormDrugName"></strong></p>
+              <form id="batchForm">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="batchNumber" class="form-label fw-semibold">Nomor Batch</label>
+                    <input type="text" class="form-control" id="batchNumber" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="batchStock" class="form-label fw-semibold">Jumlah Stok</label>
+                    <input type="number" class="form-control" id="batchStock" required min="0">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="batchEntryDate" class="form-label fw-semibold">Tanggal Masuk</label>
+                    <input type="date" class="form-control" id="batchEntryDate" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="batchExpiryDate" class="form-label fw-semibold">Tanggal Kedaluwarsa</label>
+                    <input type="date" class="form-control" id="batchExpiryDate" required>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" form="batchForm" class="btn btn-primary-custom">
+                <i class="fa-solid fa-save me-2"></i>Simpan Batch
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERUBAHAN BARU: Modal untuk Konfirmasi Hapus Batch -->
+      <div class="modal fade" id="deleteBatchModal" tabindex="-1" aria-labelledby="deleteBatchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+          <div class="modal-content" style="border-radius: var(--border-radius);">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="deleteBatchModalLabel"><i class="fa-solid fa-triangle-exclamation me-2"></i> Konfirmasi Hapus</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p class="my-3">Apakah Anda yakin ingin menghapus data **Batch <strong id="batchNumberToDelete"></strong>**? Tindakan ini tidak dapat dibatalkan.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteBatchButton">Ya, Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="main-footer">
+    Copyright &copy; <span id="copyright-year"></span> &bull; Aplikasi Rekam Medis | <a href='#' title='Klinik Aulia Hasanah Medika' target='_blank'>Klinik Aulia Hasanah Medika</a>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    
+    // Skrip Tahun Copyright
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+    // Skrip Sidebar Toggle
+    const btnSidebar = document.getElementById("btnSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("backdrop");
+    if (btnSidebar && sidebar && backdrop) {
+      btnSidebar.addEventListener("click", () => {
+        sidebar.classList.toggle("show");
+        backdrop.classList.toggle("show");
+      });
+      backdrop.addEventListener("click", () => {
+        sidebar.classList.remove("show");
+        backdrop.classList.remove("show");
+      });
+    }
+
+    // Inisialisasi Tooltip Bootstrap
+    const tooltipTriggerList = [...document.querySelectorAll('[data-bs-toggle="tooltip"]')];
+    tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+    /**
+     * ===================================================================
+     * SKRIP INTERAKTIF UNTUK ALUR KERJA FARMASI 
+     * ===================================================================
+     */
+    const prescriptionQueue = document.getElementById('prescriptionQueue');
+    const prescriptionModal = new bootstrap.Modal(document.getElementById('prescriptionModal'));
+    let activeRow = null;
+
+    // --- FUNGSI SUARA (TEXT-TO-SPEECH) ---
+    const canSpeak = 'speechSynthesis' in window;
+    const synth = canSpeak ? window.speechSynthesis : null;
+    let voices = [];
+    if (canSpeak) {
+        const populateVoiceList = () => {
+            voices = synth.getVoices().filter(v => v.lang.startsWith('id'));
+            if (voices.length === 0) voices = synth.getVoices();
+        };
+        populateVoiceList();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+    }
+    const speak = (text) => {
+        if (!canSpeak || synth.speaking) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (voices.length > 0) utterance.voice = voices[0];
+        utterance.pitch = 1;
+        utterance.rate = 1;
+        synth.speak(utterance);
+    };
+
+    if (prescriptionQueue) {
+        // --- EVENT DELEGATION UTAMA ---
+        prescriptionQueue.addEventListener('click', function(event) {
+            const actionBtn = event.target.closest('.action-btn');
+            if (!actionBtn) return;
+
+            const patientRow = actionBtn.closest('tr');
+            const currentStatus = patientRow.dataset.status;
+            const patientName = patientRow.querySelector('[data-patient-name]').dataset.patientName;
+            
+            // Simpan baris yang sedang aktif
+            activeRow = patientRow;
+            
+            // --- Cek apakah ini tombol panggil ---
+            if (actionBtn.dataset.action === 'call') {
+                speak(`Pasien atas nama ${patientName}, obat anda sudah siap, silakan menuju ke farmasi.`);
+                return; // Hentikan eksekusi lebih lanjut
+            }
+
+            // --- Aksi berdasarkan status ---
+            switch (currentStatus) {
+                case 'menunggu':
+                    // Aksi ini ditangani oleh atribut data-bs-toggle="modal"
+                    break;
+                
+                case 'disiapkan':
+                    const buttonGroupHTML = `
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-success btn-sm fw-semibold action-btn">Serahkan Obat</button>
+                            <button class="btn btn-outline-secondary btn-sm action-btn" data-action="call" data-bs-toggle="tooltip" data-bs-placement="top" title="Panggil Pasien">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>`;
+                    updateStatus(patientRow, 'siap', 'status-badge status-siap', 'Siap Diambil', buttonGroupHTML);
+                    break;
+                
+                case 'siap':
+                    updateStatus(patientRow, 'diambil', 'status-badge status-diambil', 'Selesai', `<i class="fa-solid fa-check-circle text-success fs-5"></i>`);
+                    patientRow.querySelectorAll('td').forEach(td => td.classList.add('text-muted'));
+                    break;
+            }
+        });
+    }
+
+    function updateStatus(row, nextStatus, badgeClass, badgeText, buttonHTML) {
+        const statusCell = row.querySelector('.status-badge');
+        const actionCell = row.querySelector('.action-cell');
+        row.dataset.status = nextStatus;
+        statusCell.className = badgeClass;
+        statusCell.textContent = badgeText;
+        actionCell.innerHTML = buttonHTML;
+    }
+
+    // --- EVENT LISTENER UNTUK MODAL RESEP ---
+    const modalElement = document.getElementById('prescriptionModal');
+    if (modalElement) {
+        modalElement.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            document.getElementById('modalPatientName').textContent = button.dataset.patientName;
+            document.getElementById('modalDoctorName').textContent = button.dataset.doctorName;
+            const prescriptionList = document.getElementById('modalPrescriptionList');
+            const prescriptionData = JSON.parse(button.dataset.prescription);
+            prescriptionList.innerHTML = '';
+            prescriptionData.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = `${item.name} - ${item.qty} (${item.signa})`;
+                prescriptionList.appendChild(li);
+            });
+        });
+
+        document.getElementById('markAsPreparedBtn').addEventListener('click', () => {
+            if (activeRow) {
+                updateStatus(activeRow, 'disiapkan', 'status-badge status-disiapkan', 'Sedang Disiapkan', `<button class="btn btn-warning btn-sm fw-semibold text-dark action-btn">Tandai Siap</button>`);
+            }
+            prescriptionModal.hide();
+        });
+    }
+
+    /**
+     * ===================================================================
+     * SKRIP INTERAKTIF UNTUK MANAJEMEN STOK (FIFO) - DIPERBARUI
+     * ===================================================================
+     */
+    const stockDetailModalEl = document.getElementById('stockDetailModal');
+    const batchFormModalEl = document.getElementById('batchFormModal');
+
+    if (stockDetailModalEl) {
+        stockDetailModalEl.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const drugName = button.dataset.drugName;
+            let batchesData = JSON.parse(button.dataset.batches || '[]');
+
+            // Set judul modal & teruskan nama obat ke modal form
+            document.getElementById('drugNameLabel').textContent = drugName;
+            if (batchFormModalEl) {
+                batchFormModalEl.querySelector('#batchFormDrugName').textContent = drugName;
+            }
+            
+            // Render daftar batch
+            renderBatchList(batchesData);
+        });
+    }
+
+    function renderBatchList(batchesData) {
+        const batchList = document.getElementById('batchList');
+        batchList.innerHTML = '';
+
+        batchesData.sort((a, b) => new Date(a.expiry) - new Date(b.expiry));
+
+        if (batchesData.length === 0) {
+            batchList.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada batch untuk obat ini.</td></tr>';
+            return;
+        }
+
+        batchesData.forEach(batch => {
+            const tr = document.createElement('tr');
+            const isExpired = new Date(batch.expiry) < new Date();
+            const isNearExpiry = !isExpired && (new Date(batch.expiry) - new Date()) / (1000 * 60 * 60 * 24) < 90;
+            let expiryClass = isExpired ? 'text-danger fw-bold' : (isNearExpiry ? 'text-warning fw-bold' : '');
+
+            // PERUBAHAN UTAMA DI SINI
+            tr.innerHTML = `
+                <td>${batch.batch}</td>
+                <td>${batch.stock.toLocaleString('id-ID')}</td>
+                <td>${new Date(batch.entry).toLocaleDateString('id-ID')}</td>
+                <td class="${expiryClass}">${new Date(batch.expiry).toLocaleDateString('id-ID')}</td>
+                <td class="action-buttons">
+                    <a href="#" class="text-secondary" data-bs-toggle="modal" data-bs-target="#batchFormModal" 
+                       data-batch='${JSON.stringify(batch)}' data-bs-placement="top" data-bs-title="Edit Batch">
+                        <i class="fa-solid fa-pen-to-square" data-bs-toggle="tooltip" title="Edit Batch"></i>
+                    </a>
+                    <a href="#" class="text-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteBatchModal" 
+                       data-batch-number="${batch.batch}" data-bs-placement="top" data-bs-title="Hapus Batch">
+                        <i class="fa-solid fa-trash-can" data-bs-toggle="tooltip" title="Hapus Batch"></i>
+                    </a>
+                </td>
+            `;
+            batchList.appendChild(tr);
+        });
+        
+        // Inisialisasi ulang tooltip untuk tombol yang baru dibuat
+        const tooltipTriggerList = [...batchList.querySelectorAll('[data-bs-toggle="tooltip"]')];
+        tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    }
+
+    if (batchFormModalEl) {
+        batchFormModalEl.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const batchDataString = button.dataset.batch;
+            const modalTitle = batchFormModalEl.querySelector('#batchFormModalLabel');
+            const batchForm = document.getElementById('batchForm');
+            
+            // Cek apakah ini mode Edit
+            if (batchDataString) {
+                modalTitle.innerHTML = '<i class="fa-solid fa-pen-to-square me-2"></i>Edit Batch';
+                const batchData = JSON.parse(batchDataString);
+                // Isi form dengan data yang ada
+                document.getElementById('batchNumber').value = batchData.batch;
+                document.getElementById('batchStock').value = batchData.stock;
+                document.getElementById('batchEntryDate').value = batchData.entry;
+                document.getElementById('batchExpiryDate').value = batchData.expiry;
+            } else {
+                // Mode Tambah Baru
+                modalTitle.innerHTML = '<i class="fa-solid fa-plus me-2"></i>Tambah Batch Baru';
+                batchForm.reset(); // Kosongkan form
+            }
+        });
+    }
+
+    /**
+     * ===================================================================
+     * SKRIP BARU UNTUK MODAL KONFIRMASI HAPUS BATCH
+     * ===================================================================
+     */
+    const deleteBatchModal = document.getElementById('deleteBatchModal');
+    if (deleteBatchModal) {
+      deleteBatchModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget; // Tombol hapus yang diklik
+        const batchNumber = button.dataset.batchNumber;
+
+        // Tampilkan nomor batch yang akan dihapus
+        const batchNumberSpan = deleteBatchModal.querySelector('#batchNumberToDelete');
+        batchNumberSpan.textContent = batchNumber;
+      });
+    }
+
+    /**
+     * =_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
+     * SKRIP BARU UNTUK MODAL TAMBAH OBAT BARU
+     * ===================================================================
+     */
+    const addDrugModal = document.getElementById('addDrugModal');
+    if (addDrugModal) {
+      addDrugModal.addEventListener('show.bs.modal', () => {
+        // Reset form setiap kali modal dibuka agar bersih
+        document.getElementById('addDrugForm').reset();
+      });
+    }
+
+  });
+  </script>
+</body>
+</html>
