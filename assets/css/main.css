@@ -5219,7 +5219,7 @@ section,
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  text-emphasis-color: transparent;
 }
 
 .contact .form-container p {
@@ -5920,4 +5920,18 @@ section,
   padding-top: 60px;
   padding-bottom: 60px;
   /* Add your styles here */
+}
+
+/* Responsive Sitename Change */
+.header .logo .sitename .short-name {
+  display: none;
+}
+
+@media (max-width: 575px) {
+  .header .logo .sitename .long-name {
+    display: none;
+  }
+  .header .logo .sitename .short-name {
+    display: inline;
+  }
 }

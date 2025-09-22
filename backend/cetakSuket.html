@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistem Rekam Medis Klinik Aulia Hasanah Medika">
+  <title>Antrian Cetak Surat — Aplikasi Rekam Medis</title>
+
+  <!-- Favicon dari Logo -->
+  <link rel="icon" href="../assets/img/logo.png">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tinos:wght@400;700&display=swap" rel="stylesheet"> <!-- Font untuk surat -->
+
+  <style>
+    /* ===================================================================
+       STYLES DARI HALAMAN UTAMA (TETAP SAMA)
+       =================================================================== */
+    :root {
+      --primary-color: #d63384; --secondary-color: #0d3d8a; --accent-color: #e85aa7;
+      --heading-color: #1a202c; --text-color: #4a5568; --light-gray: #f8f9fa;
+      --border-color: #e9ecef; --sidebar-bg: #ffffff;
+      --app-bg: linear-gradient(180deg, #fdf6f9 0%, #f4f6fc 100%);
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --border-radius: 12px;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; height: 70px; }
+    .topbar .brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px; color: var(--secondary-color); }
+    .topbar .logo-img { width: 36px; height: auto; max-height: 36px; }
+    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: all 0.3s; display: flex; flex-direction: column; }
+    .sidebar-nav { padding: 1rem 0.75rem; flex-grow: 1; overflow-y: auto; }
+    .sidebar .menu-title { font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0.75rem 0.5rem; font-weight: 700; }
+    .sidebar .nav-link { color: var(--text-color); border-radius: 8px; margin: 0.2rem 0; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; transition: all 0.3s; }
+    .sidebar .nav-link .fa-solid, .sidebar .nav-link .fa-regular { font-size: 1rem; width: 20px; text-align: center; transition: all 0.3s; }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover { background-image: linear-gradient(90deg, var(--primary-color), var(--accent-color)); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3); }
+    .app { display: flex; flex: 1; }
+    .content { flex: 1; padding: 2.5rem; }
+    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--heading-color); }
+    .content-card { border: 0; border-radius: var(--border-radius); box-shadow: var(--card-shadow); background: var(--sidebar-bg); border: 1px solid var(--border-color); }
+    .main-footer { padding: 1.5rem; text-align: center; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: auto; }
+    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.6rem 1.5rem; font-weight: 600; }
+    .table-responsive { border: 1px solid var(--border-color); border-radius: var(--border-radius); }
+    .table { margin-bottom: 0; }
+    .table thead th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.8rem; color: var(--heading-color); background-color: var(--light-gray); border-bottom: 2px solid var(--border-color); }
+    .table tbody td { vertical-align: middle; color: var(--text-color); }
+    .table-hover tbody tr:hover { background-color: #fdf6f9; }
+    .letter-preview { background-color: white; width: 210mm; min-height: 297mm; box-shadow: 0 0 20px rgba(0,0,0,0.15); padding: 2cm; font-family: 'Tinos', serif; color: black; font-size: 12pt; }
+    .letter-header { text-align: center; border-bottom: 4px double black; padding-bottom: 10px; }
+    .letter-header h4 { margin: 0; font-weight: 700; }
+    .letter-header p { font-size: 10pt; margin: 0; }
+    .letter-body { line-height: 1.8; }
+    .letter-signature { margin-top: 80px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <!-- (Isi Sidebar di sini, tandai menu ini sebagai .active) -->
+      <div class="sidebar-header"><i class="fa-solid fa-clipboard-list fs-4" style="color: var(--primary-color);"></i><h5 class="mb-0 fw-bold" style="color: var(--secondary-color);">Rekam Medis</h5></div>
+      <nav class="sidebar-nav">
+        <!-- Anda bisa menambahkan menu baru "Antrian Cetak" di sini dan memberinya kelas .active -->
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <h1 class="page-title">Antrian Cetak Surat Keterangan</h1>
+      <div class="card content-card mt-4">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Tanggal Periksa</th>
+                  <th>No. RM</th>
+                  <th>Nama Pasien</th>
+                  <th>Jenis Surat</th>
+                  <th>Dokter</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>21-08-2025</td>
+                  <td class="fw-semibold">RME-00003</td>
+                  <td>Putri Melati</td>
+                  <td>Surat Keterangan Sehat</td>
+                  <td>dr. Citra</td>
+                  <td class="text-center">
+                    <!-- PERUBAHAN: Tombol kini memiliki kelas .download-btn -->
+                    <button class="btn btn-success btn-sm download-btn"
+                            data-patient-info='{"name":"Putri Melati", "age":6, "job":"Pelajar", "address":"Jl. Angkasa Raya No. 1, Cirebon"}'
+                            data-suket-info='{"type":"sehat", "purpose":"Syarat masuk sekolah", "doctor":"dr. Citra", "exam":{"bp":"100/70", "temp":"36.5", "colorblind":"Tidak"}, "sick":{}}'>
+                      <i class="fa-solid fa-file-pdf me-1"></i> Unduh PDF
+                    </button>
+                  </td>
+                </tr>
+                <!-- Daftar pasien lain yang butuh surat -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <footer class="main-footer">
+    <!-- (Isi footer sama seperti sebelumnya) -->
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // ... (Skrip Sidebar Toggle)
+
+        /**
+     * ===================================================================
+     * FUNGSI BARU UNTUK GENERATE PDF DENGAN TIMEOUT
+     * ===================================================================
+     */
+    function generatePdf(button) {
+        // Tampilkan loading spinner di tombol (opsional, tapi bagus untuk UX)
+        const originalIcon = button.innerHTML;
+        button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengunduh...`;
+        button.disabled = true;
+
+        // 1. Ambil data dari tombol yang diklik
+        const patientInfo = JSON.parse(button.dataset.patientInfo);
+        const suketInfo = JSON.parse(button.dataset.suketInfo);
+
+        // 2. Buat elemen "hantu" baru setiap kali fungsi dipanggil
+        const element = document.createElement('div');
+        element.className = 'letter-preview';
+        element.style.position = 'absolute';
+        element.style.left = '-9999px';
+        element.style.top = '-9999px';
+        
+        // 3. Buat konten HTML surat secara dinamis
+        const today = new Date();
+        const dateString = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        let contentHTML = '';
+        let titleHTML = '';
+
+        if (suketInfo.type === 'sehat') {
+            titleHTML = 'SURAT KETERANGAN SEHAT';
+            contentHTML = `<p>Berdasarkan hasil pemeriksaan fisik yang telah kami lakukan pada hari ini, yang bersangkutan dinyatakan dalam keadaan <strong>SEHAT</strong>. Hasil pemeriksaan singkat adalah sebagai berikut:</p><ul><li>Tekanan Darah: ${suketInfo.exam.bp || '-'} mmHg</li><li>Suhu Badan: ${suketInfo.exam.temp || '-'} °C</li><li>Buta Warna: ${suketInfo.exam.colorblind || '-'}</li></ul><p>Surat keterangan ini dibuat untuk keperluan <strong>${suketInfo.purpose || '-'}</strong>.</p>`;
+        } else { // sakit
+            titleHTML = 'SURAT KETERANGAN SAKIT';
+            const sickDays = suketInfo.sick.days || '...';
+            const startDate = suketInfo.sick.start;
+            let dateText = '-';
+            if (startDate) {
+                const start = new Date(startDate);
+                const end = new Date(start);
+                end.setDate(start.getDate() + (parseInt(sickDays, 10) - 1));
+                dateText = `${start.toLocaleDateString('id-ID')} s/d ${end.toLocaleDateString('id-ID')}`;
+            }
+            contentHTML = `<p>Berdasarkan hasil pemeriksaan fisik yang telah kami lakukan pada hari ini, yang bersangkutan dalam keadaan <strong>SAKIT</strong> sehingga perlu beristirahat selama <strong>${sickDays} hari</strong>, terhitung mulai tanggal ${dateText}.</p>`;
+        }
+
+        const letterHTML = `
+            <div class="letter-header">
+                <img src="../assets/img/logo.png" alt="Logo" style="width: 80px; margin-bottom: 10px;">
+                <h4>KLINIK AULIA HASANAH MEDIKA</h4>
+                <p>Jl. Pangeran Arya Salingsingan, Blok Baujaya, Rt/Rw 005/003, Ds. Warukawung, Kec. Depok, Kab. Cirebon</p>
+                <p>Telp: +62 851 2121 9995 | Email: hasanahmedika2024@gmail.com</p>
+            </div>
+            <div class="letter-body mt-4">
+                <h5 class="text-center text-decoration-underline fw-bold">${titleHTML}</h5>
+                <p class="text-center">Nomor: ${Math.floor(Math.random() * 100) + 100}/SK/AHM/VIII/2025</p>
+                <p class="mt-4">Yang bertanda tangan di bawah ini, Dokter Klinik Aulia Hasanah Medika, dengan ini menerangkan bahwa:</p>
+                <table class="table table-borderless table-sm">
+                    <tr><td width="30%">Nama</td><td width="5%">:</td><td class="fw-semibold">${patientInfo.name}</td></tr>
+                    <tr><td>Usia</td><td>:</td><td>${patientInfo.age} Tahun</td></tr>
+                    <tr><td>Pekerjaan</td><td>:</td><td>${patientInfo.job}</td></tr>
+                    <tr><td>Alamat</td><td>:</td><td>${patientInfo.address}</td></tr>
+                </table>
+                ${contentHTML}
+                <p>Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.</p>
+            </div>
+            <div class="letter-signature text-end">
+                <p class="mb-5">Cirebon, ${dateString}</p>
+                <p class="fw-bold text-decoration-underline">${suketInfo.doctor}</p>
+                <p>Dokter Pemeriksa</p>
+            </div>
+        `;
+
+        // 4. Masukkan HTML ke elemen "hantu" dan tambahkan ke body
+        element.innerHTML = letterHTML;
+        document.body.appendChild(element);
+        
+        // 5. SOLUSI: Gunakan setTimeout untuk memberi waktu browser me-render
+        setTimeout(() => {
+            const fileName = `Surat_${suketInfo.type}_${patientInfo.name.replace(/\s/g, '_')}.pdf`;
+            const opt = {
+              margin: 0.5,
+              filename: fileName,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true },
+              jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Setelah selesai, hapus elemen "hantu" dan kembalikan tombol ke normal
+                document.body.removeChild(element);
+                button.innerHTML = originalIcon;
+                button.disabled = false;
+            });
+
+        }, 100); // Penundaan 100ms biasanya cukup
+    }
+  });
+  </script>
+</body>
+</html>

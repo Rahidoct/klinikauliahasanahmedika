@@ -18,93 +18,8 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    /* ===================================================================
-       STYLES DARI HALAMAN UTAMA (TETAP SAMA)
-       =================================================================== */
-    :root {
-      --primary-color: #d63384; --secondary-color: #0d3d8a; --accent-color: #e85aa7;
-      --heading-color: #1a202c; --text-color: #4a5568; --light-gray: #f8f9fa;
-      --border-color: #e9ecef; --sidebar-bg: #ffffff;
-      --app-bg: linear-gradient(180deg, #fdf6f9 0%, #f4f6fc 100%);
-      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      --card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --border-radius: 12px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-color); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; }
-    /* (Salin semua style umum lainnya dari halaman sebelumnya di sini) */
-    .topbar { background: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; height: 70px; }
-    .topbar .brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px; color: var(--secondary-color); }
-    .topbar .logo-img { width: 36px; height: auto; max-height: 36px; }
-    .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: var(--transition); display: flex; flex-direction: column; }
-    .sidebar-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
-    .sidebar-nav { padding: 1rem 0.75rem; flex-grow: 1; overflow-y: auto; }
-    .sidebar .menu-title { font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0.75rem 0.5rem; font-weight: 700; }
-    .sidebar .nav-link { color: var(--text-color); border-radius: 8px; margin: 0.2rem 0; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 600; transition: var(--transition); }
-    .sidebar .nav-link .fa-solid, .sidebar .nav-link .fa-regular { font-size: 1rem; width: 20px; text-align: center; transition: var(--transition); }
-    .sidebar .nav-link.active, .sidebar .nav-link:hover { background-image: linear-gradient(90deg, var(--primary-color), var(--accent-color)); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3); }
-    .sidebar .nav-link.active i, .sidebar .nav-link:hover i { transform: scale(1.1); }
-    .sidebar .nav-link .fa-chevron-down { transition: transform 0.3s ease; font-size: 0.8rem; }
-    .sidebar .nav-link:not(.collapsed) .fa-chevron-down { transform: rotate(180deg); }
-    .sidebar .submenu-container { position: relative; padding-left: 26px; margin-left: 1rem; }
-    .sidebar .submenu-container::before { content: ''; position: absolute; left: 0; top: 0; bottom: 10px; width: 2px; background-color: var(--border-color); border-radius: 2px; }
-    .sidebar .submenu-container ul { list-style: none; padding-left: 1rem; }
-    .sidebar .submenu-link { color: var(--text-color); padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 0.8rem; position: relative; }
-    .sidebar .submenu-link::before { content: ''; width: 6px; height: 6px; background-color: #cbd5e0; border-radius: 50%; transition: var(--transition); }
-    .sidebar .submenu-link:hover { background-color: #fdf6f9; color: var(--primary-color); box-shadow: none; }
-    .sidebar .submenu-link:hover::before { background-color: var(--primary-color); transform: scale(1.2); }
-    .app { display: flex; flex: 1; }
-    .content { flex: 1; padding: 2.5rem; animation: fadeInUp 0.5s ease-out; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .page-title { font-size: 1.8rem; font-weight: 800; color: var(--heading-color); margin-bottom: 2rem; position: relative; }
-    .content-card { border: 0; border-radius: var(--border-radius); box-shadow: var(--card-shadow); background: var(--sidebar-bg); border: 1px solid var(--border-color); }
-    .main-footer { padding: 1.5rem; text-align: center; color: #a0aec0; font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: auto; }
-    .main-footer a { color: var(--primary-color); text-decoration: none; }
-    .main-footer a:hover { text-decoration: underline; }
-    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.6rem 1.5rem; font-weight: 600; }
-    .btn-primary-custom:hover { background-color: #c22572; border-color: #c22572; }
+  <link rel="stylesheet" href="../assets/css/style.css">
 
-    /* STYLING KHUSUS HALAMAN PENGATURAN */
-    .settings-nav .nav-link {
-        font-weight: 600;
-        color: var(--text-color);
-        margin-bottom: 0.5rem;
-    }
-    .settings-nav .nav-link.active {
-        background-color: var(--primary-color);
-        color: white;
-    }
-    .profile-picture-wrapper {
-        position: relative;
-        width: 120px;
-        height: 120px;
-    }
-    .profile-picture-wrapper .profile-picture {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .profile-picture-wrapper .upload-button {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 36px;
-        height: 36px;
-        background-color: var(--primary-color);
-        border: 2px solid white;
-    }
-    .form-switch .form-check-input {
-        width: 3.5em;
-        height: 1.75em;
-    }
-
-    @media (max-width: 992px) {
-      .sidebar { position: fixed; z-index: 1040; height: 100vh; left: -280px; }
-      .sidebar.show { left: 0; }
-      .backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: none; z-index: 1030; }
-      .backdrop.show { display: block; }
-    }
-  </style>
 </head>
 <body>
 
@@ -117,9 +32,35 @@
   <div class="app">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-      <!-- (Isi Sidebar sama seperti halaman sebelumnya, tidak ada yang aktif) -->
-      <div class="sidebar-header"><i class="fa-solid fa-clipboard-list fs-4" style="color: var(--primary-color);"></i><h5 class="mb-0 fw-bold" style="color: var(--secondary-color);">Rekam Medis</h5></div>
-      <nav class="sidebar-nav"><div class="menu-title">Menu Utama</div><a class="nav-link" href="#"><i class="fa-solid fa-chart-pie"></i> Dashboard</a><a class="nav-link" href="#"><i class="fa-regular fa-calendar-plus"></i> Pendaftaran</a><a class="nav-link" href="#"><i class="fa-solid fa-users"></i> Data Pasien</a><a class="nav-link" href="#"><i class="fa-solid fa-id-card-clip"></i> Data Pegawai</a><div class="menu-title">Pelayanan</div><a class="nav-link" href="#"><i class="fa-solid fa-person-walking"></i> Rawat Jalan</a><a class="nav-link collapsed" data-bs-toggle="collapse" href="#submenu-rawat-inap" role="button" aria-expanded="false" aria-controls="submenu-rawat-inap"><i class="fa-solid fa-bed-pulse"></i><span>Rawat Inap</span><i class="fa-solid fa-chevron-down ms-auto"></i></a><div class="collapse submenu-container" id="submenu-rawat-inap"><ul class="nav flex-column"><li><a class="nav-link submenu-link" href="#">Detail Ruangan</a></li><li><a class="nav-link submenu-link" href="#">Riwayat Pasien</a></li></ul></div><a class="nav-link" href="#"><i class="fa-solid fa-pills"></i> Farmasi</a><div class="menu-title">Laporan</div><a class="nav-link" href="#"><i class="fa-solid fa-file-invoice"></i> Laporan Kunjungan</a></nav>
+      <div class="sidebar-header">
+        <i class="fa-solid fa-clipboard-list fs-4" style="color: var(--primary-color);"></i>
+        <h5 class="mb-0 fw-bold" style="color: var(--secondary-color);">Rekam Medis</h5>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="menu-title">Menu Utama</div>
+        <a class="nav-link" href="index.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a class="nav-link" href="pendaftaran.html"><i class="fa-regular fa-calendar-plus"></i> Pendaftaran</a>
+        <a class="nav-link" href="pasien.html"><i class="fa-solid fa-users"></i> Data Pasien</a>
+        <a class="nav-link" href="pegawai.html"><i class="fa-solid fa-id-card-clip"></i> Data Pegawai</a>
+
+        <div class="menu-title">Pelayanan</div>
+        <a class="nav-link" href="rawatJalan.html"><i class="fa-solid fa-person-walking"></i> Rawat Jalan</a>
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#submenu-rawat-inap" role="button" aria-expanded="false" aria-controls="submenu-rawat-inap">
+            <i class="fa-solid fa-bed-pulse"></i>
+            <span>Rawat Inap</span>
+            <i class="fa-solid fa-chevron-down ms-auto"></i>
+        </a>
+        <div class="collapse submenu-container" id="submenu-rawat-inap">
+            <ul class="nav flex-column">
+                <li><a class="nav-link submenu-link" href="ruangInap.html">Detail Ruangan</a></li>
+                <li><a class="nav-link submenu-link" href="historyInap.html">Riwayat Pasien Inap</a></li>
+            </ul>
+        </div>
+        <a class="nav-link" href="farmasi.html"><i class="fa-solid fa-pills"></i> Farmasi</a>
+
+        <div class="menu-title">Laporan</div>
+        <a class="nav-link" href="laporan.html"><i class="fa-solid fa-file-invoice"></i> Laporan Kunjungan</a>
+      </nav>
     </aside>
     <div class="backdrop" id="backdrop"></div>
 
@@ -250,27 +191,6 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    
-    // Skrip Tahun Copyright
-    document.getElementById('copyright-year').textContent = new Date().getFullYear();
-
-    // Skrip Sidebar Toggle
-    const btnSidebar = document.getElementById("btnSidebar");
-    const sidebar = document.getElementById("sidebar");
-    const backdrop = document.getElementById("backdrop");
-    if (btnSidebar && sidebar && backdrop) {
-      btnSidebar.addEventListener("click", () => {
-        sidebar.classList.toggle("show");
-        backdrop.classList.toggle("show");
-      });
-      backdrop.addEventListener("click", () => {
-        sidebar.classList.remove("show");
-        backdrop.classList.remove("show");
-      });
-    }
-  });
-  </script>
+  <script src="../assets/js/script.js"></script>
 </body>
 </html>
